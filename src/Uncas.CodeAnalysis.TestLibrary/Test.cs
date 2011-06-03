@@ -49,7 +49,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <summary>
         /// Tests the method.
         /// </summary>
-        public void TestMethod()
+        public static void TestMethod()
         {
             int x = 1;
             x++;

@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Uncas.CodeAnalysis
+namespace Uncas.SourceAnalysis
 {
     using StyleCop;
     using StyleCop.CSharp;
