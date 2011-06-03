@@ -17,7 +17,7 @@ namespace Uncas.CodeAnalysis
     public class EntitiesShouldNotHavePublicSetters : BaseRule
     {
         /// <summary>
-        /// The name of the assembly containing the entity type.
+        /// The name of the assembly containing the base entity type.
         /// </summary>
         private const string EntityAssemblyName = "Uncas.CodeAnalysis.TestLibrary";
 
@@ -35,51 +35,43 @@ namespace Uncas.CodeAnalysis
         }
 
         /// <summary>
-        /// Checks the specified type.
+        /// Checks the specified member.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="member">The member.</param>
         /// <returns>A list of problems.</returns>
-        public override ProblemCollection Check(TypeNode type)
+        public override ProblemCollection Check(Member member)
         {
+            var property = member as PropertyNode;
+            if (property == null)
+            {
+                return null;
+            }
+
+            var type = property.DeclaringType;
             if (!IsEntity(type))
             {
                 return null;
             }
 
-            var publicProperties = type.Members.OfType<PropertyNode>()
-                .Where(x => x.Setter.IsPublic);
-
-            foreach (var publicProperty in publicProperties)
+            if (!property.Setter.IsPublic)
             {
-                var resolution = new Resolution(
-                   type.Name.Name,
-                   "Property '{0}' of entity '{1}' has a public setter, which is not allowed for entities.",
-                   publicProperty.Name.Name,
-                   type.Name.Name);
-                var problem = new Problem(resolution, type)
-                {
-                    Certainty = 100,
-                    FixCategory = FixCategories.Breaking,
-                    MessageLevel = MessageLevel.Warning,
-                };
-                Problems.Add(problem);
+                return null;
             }
 
-            return Problems;
-        }
+            var resolution = new Resolution(
+                property.Name.Name,
+                "The property {0}.{1} of entity {0} has a public setter, which is not allowed for entities.",
+                type.Name.Name,
+                property.Name.Name);
+            var problem = new Problem(resolution, property)
+            {
+                Certainty = 80,
+                FixCategory = FixCategories.Breaking,
+                MessageLevel = MessageLevel.Warning,
+            };
+            Problems.Add(problem);
 
-        /// <summary>
-        /// Determines whether the assembly is an entity assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        /// <c>true</c> if the specified assembly is an entity assembly; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool IsEntityAssembly(AssemblyNode assembly)
-        {
-            return assembly.Name.StartsWith(
-                EntityAssemblyName,
-                StringComparison.OrdinalIgnoreCase);
+            return Problems;
         }
 
         /// <summary>
@@ -119,6 +111,20 @@ namespace Uncas.CodeAnalysis
                 t => t.FullName == EntityTypeName);
 
             return type.IsDerivedFrom(entityType);
+        }
+
+        /// <summary>
+        /// Determines whether the assembly is an entity assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>
+        /// <c>true</c> if the specified assembly is an entity assembly; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool IsEntityAssembly(AssemblyNode assembly)
+        {
+            return assembly.Name.StartsWith(
+                EntityAssemblyName,
+                StringComparison.OrdinalIgnoreCase);
         }
     }
 }
