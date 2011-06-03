@@ -57,12 +57,10 @@ namespace Uncas.CodeAnalysis
 
             foreach (var publicProperty in publicProperties)
             {
-                var resolution = new Resolution(type.Name.Name);
-
-                // var resolution = new Resolution(
-                //    type.Name.Name,
-                //    "Property {0} has a public setter.",
-                //    publicProperty.Name.Name);
+                var resolution = new Resolution(
+                   type.Name.Name,
+                   "Property {0} has a public setter.",
+                   publicProperty.Name.Name);
                 var problem = new Problem(resolution, type)
                 {
                     Certainty = 100,

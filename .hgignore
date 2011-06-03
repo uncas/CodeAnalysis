@@ -3,3 +3,4 @@
 bin/Debug
 lib/FxCop
 obj/Debug
+StyleCop.Cache
