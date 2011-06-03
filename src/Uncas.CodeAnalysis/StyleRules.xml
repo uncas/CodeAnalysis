@@ -3,9 +3,14 @@
   <Description>Custom source analysis rules.</Description>
   <Rules>
     <RuleGroup Name="Naming">
-      <Rule Name="FieldNamesMustBeginWithUnderscore" CheckId="US1309">
-        <Context>Always prefix field names with underscore.</Context>
-        <Description>Always underscore field names.</Description>
+      <Rule Name="FieldNamesMustBeginWithUnderscore" CheckId="US1301">
+        <Context>The field '{0}' should be prefixed with an underscore and called '_{0}' instead.</Context>
+        <Description>Always prefix field names with underscore.</Description>
+      </Rule>
+    </RuleGroup>
+    <RuleGroup Name="Maintainability">
+      <Rule Name="TooLongMethod" CheckId="US1401">
+        <Context>The method '{0}' has about {1} lines (allowed are {2} lines) and is too long.</Context>
       </Rule>
     </RuleGroup>
   </Rules>

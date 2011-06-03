@@ -45,5 +45,111 @@ namespace Uncas.CodeAnalysis.TestLibrary
         public int MyDebugProperty{ get; set; }
 
 #endif
+
+        /// <summary>
+        /// Tests the method.
+        /// </summary>
+        public void TestMethod()
+        {
+            int x = 1;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+            x++;
+        }
     }
 }
