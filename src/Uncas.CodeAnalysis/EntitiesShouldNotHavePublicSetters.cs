@@ -31,21 +31,31 @@ namespace Uncas.CodeAnalysis
         /// <returns>A list of problems.</returns>
         public override ProblemCollection Check(TypeNode type)
         {
-            AddDebug(type);
-            var entityReference =
-                type.DeclaringModule.ContainingAssembly.AssemblyReferences
-                .SingleOrDefault(
-                ar => ar.Assembly.Name.StartsWith(
-                    "Uncas.CodeAnalysis.TestLibrary",
-                    StringComparison.OrdinalIgnoreCase));
+            var containingAssembly =
+                type.DeclaringModule.ContainingAssembly;
 
-            if (entityReference == null)
+            AssemblyNode entityAssembly;
+
+            if (IsEntityAssembly(containingAssembly))
             {
-                return null;
+                entityAssembly = containingAssembly;
+            }
+            else
+            {
+                var entityReference =
+                    containingAssembly.AssemblyReferences
+                    .SingleOrDefault(
+                    ar => IsEntityAssembly(ar.Assembly));
+                if (entityReference == null)
+                {
+                    return null;
+                }
+
+                entityAssembly = entityReference.Assembly;
             }
 
             var entityType =
-                entityReference.Assembly.Types.Single(
+                entityAssembly.Types.Single(
                 t => t.FullName == "Uncas.CodeAnalysis.TestLibrary.Entity");
 
             if (!type.IsDerivedFrom(entityType))
@@ -60,8 +70,9 @@ namespace Uncas.CodeAnalysis
             {
                 var resolution = new Resolution(
                    type.Name.Name,
-                   "Property {0} has a public setter.",
-                   publicProperty.Name.Name);
+                   "Property '{0}' of entity '{1}' has a public setter, which is not allowed for entities.",
+                   publicProperty.Name.Name,
+                   type.Name.Name);
                 var problem = new Problem(resolution, type)
                 {
                     Certainty = 100,
@@ -74,17 +85,18 @@ namespace Uncas.CodeAnalysis
             return Problems;
         }
 
-        private void AddDebug(TypeNode type)
+        /// <summary>
+        /// Determines whether the assembly is an entity assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>
+        /// <c>true</c> if the specified assembly is an entity assembly; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool IsEntityAssembly(AssemblyNode assembly)
         {
-            var resolution = new Resolution(
-               type.Name.Name);
-            var problem = new Problem(resolution, type)
-            {
-                Certainty = 100,
-                FixCategory = FixCategories.Breaking,
-                MessageLevel = MessageLevel.Warning,
-            };
-            Problems.Add(problem);
+            return assembly.Name.StartsWith(
+                "Uncas.CodeAnalysis.TestLibrary",
+                StringComparison.OrdinalIgnoreCase);
         }
     }
 }
