@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Rules FriendlyName="My Custom Rules">
+  <Rule TypeName="EntitiesShouldNotHavePublicSetters" Category="Uncas.Design" CheckId="UN1000">
+    <Name>Entities should not have properties with public setters.</Name>
+    <Description>Entities should protect their internal workings, and therefore not allow outsiders to change properties at will.</Description>
+    <Url>http://uncas.dk</Url>
+    <Resolution>The entity {0} has properties with public setters.</Resolution>
+    <MessageLevel Certainty="95">Warning</MessageLevel>
+    <FixCategories>Breaking</FixCategories>
+    <Email />
+    <Owner />
+  </Rule>
+</Rules>

@@ -1,0 +1,5 @@
+~
+.suo
+bin/Debug
+lib/FxCop
+obj/Debug

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uncas.CodeAnalysis", "src\Uncas.CodeAnalysis\Uncas.CodeAnalysis.csproj", "{92665A02-E075-4C70-8F29-6307C86BD5A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uncas.CodeAnalysis.TestLibrary", "src\Uncas.CodeAnalysis.TestLibrary\Uncas.CodeAnalysis.TestLibrary.csproj", "{9E8CFA26-9D06-4BE7-B4A2-FBF1ED3D1DE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92665A02-E075-4C70-8F29-6307C86BD5A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92665A02-E075-4C70-8F29-6307C86BD5A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92665A02-E075-4C70-8F29-6307C86BD5A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92665A02-E075-4C70-8F29-6307C86BD5A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E8CFA26-9D06-4BE7-B4A2-FBF1ED3D1DE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E8CFA26-9D06-4BE7-B4A2-FBF1ED3D1DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E8CFA26-9D06-4BE7-B4A2-FBF1ED3D1DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E8CFA26-9D06-4BE7-B4A2-FBF1ED3D1DE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
