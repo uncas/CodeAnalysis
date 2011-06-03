@@ -17,6 +17,16 @@ namespace Uncas.CodeAnalysis
     public class EntitiesShouldNotHavePublicSetters : BaseRule
     {
         /// <summary>
+        /// The name of the assembly containing the entity type.
+        /// </summary>
+        private const string EntityAssemblyName = "Uncas.CodeAnalysis.TestLibrary";
+
+        /// <summary>
+        /// The name of the entity type.
+        /// </summary>
+        private const string EntityTypeName = "Uncas.CodeAnalysis.TestLibrary.Entity";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EntitiesShouldNotHavePublicSetters"/> class.
         /// </summary>
         public EntitiesShouldNotHavePublicSetters()
@@ -56,7 +66,7 @@ namespace Uncas.CodeAnalysis
 
             var entityType =
                 entityAssembly.Types.Single(
-                t => t.FullName == "Uncas.CodeAnalysis.TestLibrary.Entity");
+                t => t.FullName == EntityTypeName);
 
             if (!type.IsDerivedFrom(entityType))
             {
@@ -95,7 +105,7 @@ namespace Uncas.CodeAnalysis
         private static bool IsEntityAssembly(AssemblyNode assembly)
         {
             return assembly.Name.StartsWith(
-                "Uncas.CodeAnalysis.TestLibrary",
+                EntityAssemblyName,
                 StringComparison.OrdinalIgnoreCase);
         }
     }
