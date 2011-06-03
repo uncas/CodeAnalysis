@@ -31,6 +31,7 @@ namespace Uncas.CodeAnalysis
         /// <returns>A list of problems.</returns>
         public override ProblemCollection Check(TypeNode type)
         {
+            AddDebug(type);
             var entityReference =
                 type.DeclaringModule.ContainingAssembly.AssemblyReferences
                 .SingleOrDefault(
@@ -71,6 +72,19 @@ namespace Uncas.CodeAnalysis
             }
 
             return Problems;
+        }
+
+        private void AddDebug(TypeNode type)
+        {
+            var resolution = new Resolution(
+               type.Name.Name);
+            var problem = new Problem(resolution, type)
+            {
+                Certainty = 100,
+                FixCategory = FixCategories.Breaking,
+                MessageLevel = MessageLevel.Warning,
+            };
+            Problems.Add(problem);
         }
     }
 }

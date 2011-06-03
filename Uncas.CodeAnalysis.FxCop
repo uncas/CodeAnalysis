@@ -44,40 +44,5 @@
   <Groups />
   <Settings />
  </Rules>
- <FxCopReport Version="10.0">
-  <Targets>
-   <Target Name="$(ProjectDir)/src/Uncas.CodeAnalysis/bin/Debug/Uncas.CodeAnalysis.dll">
-    <Modules>
-     <Module Name="uncas.codeanalysis.dll">
-      <Namespaces>
-       <Namespace Name="Uncas.CodeAnalysis">
-        <Types>
-         <Type Name="EntitiesShouldNotHavePublicSetters">
-          <Members>
-           <Member Name="#Check(Microsoft.FxCop.Sdk.TypeNode)">
-            <Messages>
-             <Message Id="publicProperty" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2011-06-03 18:30:13Z">
-              <Issue>
-               <Item>'EntitiesShouldNotHavePublicSetters.Check(TypeNode)'</Item>
-               <Item>'publicProperty'</Item>
-               <Item>'PropertyNode'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-        </Types>
-       </Namespace>
-      </Namespaces>
-     </Module>
-    </Modules>
-   </Target>
-  </Targets>
-  <Rules>
-   <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
-    <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
-   </Rule>
-  </Rules>
- </FxCopReport>
+ <FxCopReport Version="10.0" />
 </FxCopProject>
