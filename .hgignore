@@ -3,6 +3,7 @@
 bin/Debug
 .csproj.user
 lib/FxCop
+lib/NUnit
 lib/StyleCop
 obj/Debug
 StyleCop.Cache
