@@ -41,34 +41,7 @@ namespace Uncas.CodeAnalysis
         /// <returns>A list of problems.</returns>
         public override ProblemCollection Check(TypeNode type)
         {
-            var containingAssembly =
-                type.DeclaringModule.ContainingAssembly;
-
-            AssemblyNode entityAssembly;
-
-            if (IsEntityAssembly(containingAssembly))
-            {
-                entityAssembly = containingAssembly;
-            }
-            else
-            {
-                var entityReference =
-                    containingAssembly.AssemblyReferences
-                    .SingleOrDefault(
-                    ar => IsEntityAssembly(ar.Assembly));
-                if (entityReference == null)
-                {
-                    return null;
-                }
-
-                entityAssembly = entityReference.Assembly;
-            }
-
-            var entityType =
-                entityAssembly.Types.Single(
-                t => t.FullName == EntityTypeName);
-
-            if (!type.IsDerivedFrom(entityType))
+            if (!IsEntity(type))
             {
                 return null;
             }
@@ -107,6 +80,45 @@ namespace Uncas.CodeAnalysis
             return assembly.Name.StartsWith(
                 EntityAssemblyName,
                 StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Determines whether the specified type is an entity.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// <c>true</c> if the specified type is an entity; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool IsEntity(TypeNode type)
+        {
+            var containingAssembly =
+                type.DeclaringModule.ContainingAssembly;
+
+            AssemblyNode entityAssembly;
+
+            if (IsEntityAssembly(containingAssembly))
+            {
+                entityAssembly = containingAssembly;
+            }
+            else
+            {
+                var entityReference =
+                    containingAssembly.AssemblyReferences
+                    .SingleOrDefault(
+                    ar => IsEntityAssembly(ar.Assembly));
+                if (entityReference == null)
+                {
+                    return false;
+                }
+
+                entityAssembly = entityReference.Assembly;
+            }
+
+            var entityType =
+                entityAssembly.Types.Single(
+                t => t.FullName == EntityTypeName);
+
+            return type.IsDerivedFrom(entityType);
         }
     }
 }
