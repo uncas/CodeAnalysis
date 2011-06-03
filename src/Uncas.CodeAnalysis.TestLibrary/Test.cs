@@ -39,5 +39,11 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <remarks>This property breaks a code analysis rule.</remarks>
         /// <value>My property3.</value>
         public int MyProperty3 { get; set; }
+
+#if debug
+
+        public int MyDebugProperty{ get; set; }
+
+#endif
     }
 }

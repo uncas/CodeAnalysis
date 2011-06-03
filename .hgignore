@@ -1,6 +1,8 @@
 ~
 .suo
 bin/Debug
+.csproj.user
 lib/FxCop
+lib/StyleCop
 obj/Debug
 StyleCop.Cache

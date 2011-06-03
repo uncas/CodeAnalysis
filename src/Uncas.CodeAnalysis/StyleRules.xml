@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SourceAnalyzer Name="Uncas Rules">
+  <Description>Custom source analysis rules.</Description>
+  <Rules>
+    <RuleGroup Name="Naming">
+      <Rule Name="FieldNamesMustBeginWithUnderscore" CheckId="US1309">
+        <Context>Always prefix field names with underscore.</Context>
+        <Description>Always underscore field names.</Description>
+      </Rule>
+    </RuleGroup>
+  </Rules>
+</SourceAnalyzer>
