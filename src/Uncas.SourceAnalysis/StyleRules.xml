@@ -15,6 +15,9 @@
       <Rule Name="TooLongClass" CheckId="US1402">
         <Context>The class '{0}' has about {1} lines (allowed are {2} lines) and is too long.</Context>
       </Rule>
+      <Rule Name="AvoidIfDebug" CheckId="US1403">
+        <Context>The document '{0}' contains #if debug - please remove that!</Context>
+      </Rule>
     </RuleGroup>
   </Rules>
 </SourceAnalyzer>

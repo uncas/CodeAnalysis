@@ -17,9 +17,30 @@ namespace Uncas.CodeAnalysis.TestLibrary
     public class SourceAnalysisTests : StyleCopFixtureBase
     {
         [Test]
-        public void FieldNamesMustBeginWithUnderscore_ConstantWithoutUnderscore_NotViolated()
+        public void AvoidIfDebug_ContainsIfDebug_Violated()
         {
-            string fileName = "Test.cs";
+            string contents = @"
+namespace TestCode
+{
+    public class Test
+    {
+        private const int MyConstant = 3;
+
+#if debug
+        private const int MyDebugConstant = 5;
+#endif
+    }
+}";
+            GenerateSourceFile(contents);
+
+            RunAnalysis();
+
+            AssertViolated("AvoidIfDebug");
+        }
+
+        [Test]
+        public void AvoidIfDebug_DoesNotContainIfDebug_NotViolated()
+        {
             string contents = @"
 namespace TestCode
 {
@@ -28,7 +49,25 @@ namespace TestCode
         private const int MyConstant = 3;
     }
 }";
-            GenerateSourceFile(fileName, contents);
+            GenerateSourceFile(contents);
+
+            RunAnalysis();
+
+            AssertNotViolated("AvoidIfDebug");
+        }
+
+        [Test]
+        public void FieldNamesMustBeginWithUnderscore_ConstantWithoutUnderscore_NotViolated()
+        {
+            string contents = @"
+namespace TestCode
+{
+    public class Test
+    {
+        private const int MyConstant = 3;
+    }
+}";
+            GenerateSourceFile(contents);
 
             RunAnalysis();
 
@@ -38,7 +77,6 @@ namespace TestCode
         [Test]
         public void FieldNamesMustBeginWithUnderscore_FieldNameWithoutUnderscore_Violated()
         {
-            string fileName = "Test.cs";
             string contents = @"
 namespace TestCode
 {
@@ -47,7 +85,7 @@ namespace TestCode
         private int MyConstant = 3;
     }
 }";
-            GenerateSourceFile(fileName, contents);
+            GenerateSourceFile(contents);
 
             RunAnalysis();
 
@@ -57,10 +95,9 @@ namespace TestCode
         [Test]
         public void TooLongClass_FourHundredLines_NotViolated()
         {
-            string fileName = "Test.cs";
             const int NumberOfLines = 400;
             string contents = GetCodeWithMethod(NumberOfLines);
-            GenerateSourceFile(fileName, contents);
+            GenerateSourceFile(contents);
 
             RunAnalysis();
 
@@ -70,10 +107,9 @@ namespace TestCode
         [Test]
         public void TooLongClass_FiveHundredLines_Violated()
         {
-            string fileName = "Test.cs";
             const int NumberOfLines = 500;
             string contents = GetCodeWithMethod(NumberOfLines);
-            GenerateSourceFile(fileName, contents);
+            GenerateSourceFile(contents);
 
             RunAnalysis();
 
@@ -83,10 +119,9 @@ namespace TestCode
         [Test]
         public void TooLongMethod_FortyLines_NotViolated()
         {
-            string fileName = "Test.cs";
             const int NumberOfLines = 40;
             string contents = GetCodeWithMethod(NumberOfLines);
-            GenerateSourceFile(fileName, contents);
+            GenerateSourceFile(contents);
 
             RunAnalysis();
 
@@ -96,10 +131,9 @@ namespace TestCode
         [Test]
         public void TooLongMethod_SixtyLines_Violated()
         {
-            string fileName = "Test.cs";
             const int NumberOfLines = 60;
             string contents = GetCodeWithMethod(NumberOfLines);
-            GenerateSourceFile(fileName, contents);
+            GenerateSourceFile(contents);
 
             RunAnalysis();
 
@@ -129,11 +163,12 @@ namespace TestCode
             return builder.ToString();
         }
 
-        private void GenerateSourceFile(string fileName, string contents)
+        private void GenerateSourceFile(string contents)
         {
-            string path = Path.GetFullPath(fileName);
+            const string FileName = "Test.cs";
+            string path = Path.GetFullPath(FileName);
             File.WriteAllText(path, contents);
-            AddSourceFile(fileName);
+            AddSourceFile(FileName);
         }
     }
 }

@@ -7,6 +7,7 @@
 namespace Uncas.SourceAnalysis
 {
     using System;
+    using System.IO;
     using System.Linq;
     using StyleCop;
     using StyleCop.CSharp;
@@ -73,6 +74,7 @@ namespace Uncas.SourceAnalysis
             FieldNamesMustBeginWithUnderscore(element);
             TooLongMethod(element);
             TooLongClass(element);
+            AvoidIfDebug(element);
             return true;
         }
 
@@ -171,6 +173,27 @@ namespace Uncas.SourceAnalysis
                 elementType,
                 ruleName,
                 maxLength);
+        }
+
+        private void AvoidIfDebug(CsElement element)
+        {
+            if (element.ElementType != ElementType.Root)
+            {
+                return;
+            }
+
+            string filePath = element.Document.SourceCode.Path;
+            string contents = File.ReadAllText(filePath);
+
+            if (!contents.Contains("#if debug"))
+            {
+                return;
+            }
+
+            AddViolation(
+                element,
+                "AvoidIfDebug",
+                element.Declaration.Name);
         }
 
         /// <summary>
