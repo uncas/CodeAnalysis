@@ -8,7 +8,9 @@ namespace Uncas.CodeAnalysis.TestLibrary
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using NUnit.Framework;
     using StyleCop;
@@ -32,12 +34,12 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <summary>
         /// The addin paths.
         /// </summary>
-        private readonly List<string> _addinPaths = new List<string>();
+        private readonly IList<string> _addinPaths = new List<string>();
 
         /// <summary>
         /// The output.
         /// </summary>
-        private readonly List<string> _output = new List<string>();
+        private readonly IList<string> _output = new List<string>();
 
         /// <summary>
         /// The violations.
@@ -64,7 +66,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// Gets the violations that the last <i>StyleCop</i> analysis run has found.
         /// </summary>
         /// <value>The violations.</value>
-        protected List<Violation> Violations
+        protected IList<Violation> Violations
         {
             get { return _violations; }
         }
@@ -73,7 +75,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// Gets the output from the last <i>StyleCop</i> analysis run.
         /// </summary>
         /// <value>The output.</value>
-        protected List<string> Output
+        protected IList<string> Output
         {
             get { return _output; }
         }
@@ -333,7 +335,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <param name="ruleName">Name of the rule.</param>
         protected void AssertViolated(int violationCount, string ruleName)
         {
-            int actualCount = Violations.FindAll(v => v.Rule.Name == ruleName).Count;
+            int actualCount = Violations.Count(v => v.Rule.Name == ruleName);
             if (actualCount != violationCount)
             {
                 Assert.Fail(
@@ -415,19 +417,22 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// </exception>
         protected void AddAddInsPath(string folder)
         {
-            if (folder != null)
+            if (folder == null)
             {
-                if (Directory.Exists(folder))
-                {
-                    _addinPaths.Add(folder);
-                }
-                else
-                {
-                    throw new DirectoryNotFoundException(
-                                    string.Format(
-                                    "Directory not found: {0}.",
-                                                  folder));
-                }
+                return;
+            }
+         
+            if (Directory.Exists(folder))
+            {
+                _addinPaths.Add(folder);
+            }
+            else
+            {
+                throw new DirectoryNotFoundException(
+                    string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Directory not found: {0}.",
+                    folder));
             }
         }
 
