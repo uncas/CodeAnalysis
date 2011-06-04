@@ -1,6 +1,6 @@
 ﻿////// -----------------------------------------------------------------------
-////// <copyright file="CodeAnalysisTests.cs" company="Microsoft">
-////// TODO: Update copyright text.
+////// <copyright file="CodeAnalysisTests.cs" company="Uncas">
+////// Copyright Ole Lynge Sørensen 2011.
 ////// </copyright>
 ////// -----------------------------------------------------------------------
 

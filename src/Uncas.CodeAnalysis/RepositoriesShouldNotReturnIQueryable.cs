@@ -6,8 +6,6 @@
 
 namespace Uncas.CodeAnalysis
 {
-    using System;
-    using System.Linq;
     using Microsoft.FxCop.Sdk;
     using Microsoft.VisualStudio.CodeAnalysis.Extensibility;
 
@@ -24,7 +22,7 @@ namespace Uncas.CodeAnalysis
         /// <summary>
         /// The name of the entity type.
         /// </summary>
-        private const string RepositoryTypeName = "Uncas.CodeAnalysis.TestLibrary.Entity";
+        private const string RepositoryTypeName = "Uncas.CodeAnalysis.TestLibrary.Repository";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RepositoriesShouldNotReturnIQueryable"/> class.
@@ -65,7 +63,7 @@ namespace Uncas.CodeAnalysis
 
             var resolution = new Resolution(
                 method.Name.Name,
-                "The property {0}.{1} of entity {0} has a public setter, which is not allowed for entities.",
+                "The public method {0}.{1} of repository {0} returns IQueryable, which is not allowed for repositories.",
                 type.Name.Name,
                 method.Name.Name);
             var problem = new Problem(resolution, method)
@@ -88,7 +86,15 @@ namespace Uncas.CodeAnalysis
         /// </returns>
         private static bool IsQueryable(TypeNode typeNode)
         {
-            throw new NotImplementedException();
+            if (typeNode.Name.Name.Contains("IQueryable"))
+            {
+                return true;
+            }
+
+            return InheritanceChecker.InheritsType(
+                typeNode,
+                "System.Core",
+                "System.Linq.IQueryable");
         }
 
         /// <summary>
@@ -100,48 +106,10 @@ namespace Uncas.CodeAnalysis
         /// </returns>
         private static bool IsRepository(TypeNode type)
         {
-            var containingAssembly =
-                type.DeclaringModule.ContainingAssembly;
-
-            AssemblyNode entityAssembly;
-
-            if (IsRepositoryAssembly(containingAssembly))
-            {
-                entityAssembly = containingAssembly;
-            }
-            else
-            {
-                var entityReference =
-                    containingAssembly.AssemblyReferences
-                    .SingleOrDefault(
-                    ar => IsRepositoryAssembly(ar.Assembly));
-                if (entityReference == null)
-                {
-                    return false;
-                }
-
-                entityAssembly = entityReference.Assembly;
-            }
-
-            var entityType =
-                entityAssembly.Types.Single(
-                t => t.FullName == RepositoryTypeName);
-
-            return type.IsDerivedFrom(entityType);
-        }
-
-        /// <summary>
-        /// Determines whether the assembly is an entity assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        /// <c>true</c> if the specified assembly is an entity assembly; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool IsRepositoryAssembly(AssemblyNode assembly)
-        {
-            return assembly.Name.StartsWith(
+            return InheritanceChecker.InheritsType(
+                type,
                 RepositoryAssemblyName,
-                StringComparison.OrdinalIgnoreCase);
+                RepositoryTypeName);
         }
     }
 }

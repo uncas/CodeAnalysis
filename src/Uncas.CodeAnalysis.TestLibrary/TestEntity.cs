@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Test.cs" company="Uncas">
+// <copyright file="TestEntity.cs" company="Uncas">
 // Copyright Ole Lynge Sørensen 2011.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -11,7 +11,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
     /// <summary>
     /// Test entity that breaks a code analysis rule for entities.
     /// </summary>
-    public class Test : Entity
+    public class TestEntity : Entity
     {
         /// <summary>
         /// My constant.
@@ -19,10 +19,10 @@ namespace Uncas.CodeAnalysis.TestLibrary
         private const int MyConstant = 3;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Test"/> class.
+        /// Initializes a new instance of the <see cref="TestEntity"/> class.
         /// </summary>
         /// <param name="myProperty">My property.</param>
-        public Test(int myProperty)
+        public TestEntity(int myProperty)
         {
             if (myProperty >= int.MaxValue - MyConstant)
             {

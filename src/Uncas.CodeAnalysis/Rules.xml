@@ -1,10 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Rules FriendlyName="Uncas code analysis rules">
-  <Rule TypeName="EntitiesShouldNotHavePublicSetters" Category="Uncas.Design" CheckId="UN1000">
+  <Rule TypeName="EntitiesShouldNotHavePublicSetters" Category="Uncas.Design" CheckId="UN1001">
     <Name>Entities should not have properties with public setters.</Name>
     <Description>Entities should protect their internal workings, and therefore not allow outsiders to change properties at will.</Description>
     <Url>http://uncas.dk</Url>
     <Resolution>The entity {0} has properties with public setters.</Resolution>
+    <MessageLevel Certainty="95">Warning</MessageLevel>
+    <FixCategories>Breaking</FixCategories>
+    <Email />
+    <Owner />
+  </Rule>
+  <Rule TypeName="RepositoriesShouldNotReturnIQueryable" Category="Uncas.Design" CheckId="UN1002">
+    <Name>Repositories should not return IQueryable.</Name>
+    <Description>Repositories should load data before returning.</Description>
+    <Url>http://uncas.dk</Url>
+    <Resolution>The repository {0} returns IQueryable.</Resolution>
     <MessageLevel Certainty="95">Warning</MessageLevel>
     <FixCategories>Breaking</FixCategories>
     <Email />

@@ -6,8 +6,6 @@
 
 namespace Uncas.CodeAnalysis
 {
-    using System;
-    using System.Linq;
     using Microsoft.FxCop.Sdk;
     using Microsoft.VisualStudio.CodeAnalysis.Extensibility;
 
@@ -83,48 +81,10 @@ namespace Uncas.CodeAnalysis
         /// </returns>
         private static bool IsEntity(TypeNode type)
         {
-            var containingAssembly =
-                type.DeclaringModule.ContainingAssembly;
-
-            AssemblyNode entityAssembly;
-
-            if (IsEntityAssembly(containingAssembly))
-            {
-                entityAssembly = containingAssembly;
-            }
-            else
-            {
-                var entityReference =
-                    containingAssembly.AssemblyReferences
-                    .SingleOrDefault(
-                    ar => IsEntityAssembly(ar.Assembly));
-                if (entityReference == null)
-                {
-                    return false;
-                }
-
-                entityAssembly = entityReference.Assembly;
-            }
-
-            var entityType =
-                entityAssembly.Types.Single(
-                t => t.FullName == EntityTypeName);
-
-            return type.IsDerivedFrom(entityType);
-        }
-
-        /// <summary>
-        /// Determines whether the assembly is an entity assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        /// <c>true</c> if the specified assembly is an entity assembly; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool IsEntityAssembly(AssemblyNode assembly)
-        {
-            return assembly.Name.StartsWith(
+            return InheritanceChecker.InheritsType(
+                type,
                 EntityAssemblyName,
-                StringComparison.OrdinalIgnoreCase);
+                EntityTypeName);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SourceAnalysisTests.cs" company="Microsoft">
+// <copyright file="SourceAnalysisTests.cs" company="Uncas">
 // Copyright Ole Lynge Sørensen 2011.
 // </copyright>
 // -----------------------------------------------------------------------
