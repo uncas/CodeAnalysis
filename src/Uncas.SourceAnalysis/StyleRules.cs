@@ -175,6 +175,10 @@ namespace Uncas.SourceAnalysis
                 maxLength);
         }
 
+        /// <summary>
+        /// Avoids if debug.
+        /// </summary>
+        /// <param name="element">The element.</param>
         private void AvoidIfDebug(CsElement element)
         {
             if (element.ElementType != ElementType.Root)

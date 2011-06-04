@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseRule.cs" />
+    <Compile Include="RepositoriesShouldNotReturnIQueryable.cs" />
     <Compile Include="EntitiesShouldNotHavePublicSetters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
