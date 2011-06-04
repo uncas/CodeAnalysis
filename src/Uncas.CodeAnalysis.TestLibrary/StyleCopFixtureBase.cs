@@ -14,57 +14,8 @@ namespace Uncas.CodeAnalysis.TestLibrary
     using StyleCop;
 
     /// <summary>
-    /// Base class for MbUnit fixture that tests MS StyleCop rules.
+    /// Base class for testing StyleCop.
     /// </summary>
-    /// <remarks>
-    /// This class runs MS StyleCop and allows each individual test to add the
-    /// files it needs. A normal test will be as simple as in the example below.
-    /// Basically you add the file you need, run the analysis and check the results.
-    /// <para>
-    /// This is inspired by code that is written by Sergey Shishkin (initially for MSTest). The blog post can be
-    /// found <see href="http://sergeyshishkin.spaces.live.com/blog/cns!9F19E53BA9C1D63F!232.entry">here</see>.
-    /// </para>
-    /// <para>
-    /// The class exposes three virtual properties (<see cref="StyleCopFolder"/>, <see cref="AddInsFolder"/>, 
-    /// and <see cref="Settings"/>), that can be used to accomodate the actual test projects, if needed. However,
-    /// their respective default values are such that they assume the 'normal' scenario (see below), and in
-    /// practice, the need to override them will occur only in rare cases.<br/>
-    /// The properties assume the following test setup:
-    /// <list type="bullet">
-    /// <item><description>
-    /// The test project has references to the assembly that contain the custom <i>StyleCop</i> rules to test.
-    /// </description></item>
-    /// <item><description>
-    /// This rules assembly has references to the <c>Microsoft.StyleCop</c> and <c>Microsoft.StyleCop.Csharp</c>
-    /// assemblies (which contain <i>StyleCop</i>'s core engine).
-    /// </description></item>
-    /// <item><description>
-    /// All references are set to <c>Copy local</c> (the default).
-    /// </description></item>
-    /// <item><description>
-    /// The test project contains a <i>StyleCop</i> settings file (<c>Settings.StyleCop</c>) that
-    /// has its <c><i>Copy to Output Directory</i></c> property set.
-    /// </description></item>
-    /// </list>
-    /// </para>
-    /// <para>
-    /// The class provides also some assertion methods to verify the test outcomes.
-    /// </para>
-    /// </remarks>
-    /// <example>
-    /// This example shows the simplest possible usage of the <c>StyleCopFixtureBase</c> class:
-    /// <code>
-    /// [Test] 
-    /// public void TestSomeRule() 
-    /// { 
-    ///     base.AddSourceFile("Somefile.cs"); 
-    /// 
-    ///     base.RunAnalysis(); 
-    /// 
-    ///     base.AssertNotViolated("SomeRule"); 
-    /// } 
-    /// </code>
-    /// </example>
     public abstract class StyleCopFixtureBase : IDisposable
     {
         #region Constants
@@ -224,19 +175,19 @@ namespace Uncas.CodeAnalysis.TestLibrary
 
             _console.ViolationEncountered += (sender, args) =>
             {
+                // Console.WriteLine(
+                //    string.Format(
+                //        "Rule '{0}' violated at line {1}: {2}",
+                //        args.Violation.Rule.CheckId,
+                //        args.LineNumber,
+                //        args.Message));
                 _violations.Add(args.Violation);
-                Console.WriteLine(
-                    string.Format(
-                    "Rule '{0}' violated at line {1}: {2}",
-                                                args.Violation.Rule.CheckId,
-                                                args.LineNumber,
-                                                args.Message));
             };
 
             _console.OutputGenerated += (sender, args) =>
             {
+                // Console.WriteLine(args.Output);
                 _output.Add(args.Output);
-                Console.WriteLine(args.Output);
             };
         }
 

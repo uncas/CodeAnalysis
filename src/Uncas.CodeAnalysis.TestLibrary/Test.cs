@@ -12,12 +12,17 @@ namespace Uncas.CodeAnalysis.TestLibrary
     public class Test : Entity
     {
         /// <summary>
+        /// My constant.
+        /// </summary>
+        private const int MyConstant = 3;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Test"/> class.
         /// </summary>
         /// <param name="myProperty">My property.</param>
         public Test(int myProperty)
         {
-            MyProperty = myProperty;
+            MyProperty = myProperty + MyConstant;
         }
 
         /// <summary>

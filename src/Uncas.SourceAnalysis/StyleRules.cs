@@ -6,6 +6,8 @@
 
 namespace Uncas.SourceAnalysis
 {
+    using System;
+    using System.Linq;
     using StyleCop;
     using StyleCop.CSharp;
 
@@ -23,7 +25,7 @@ namespace Uncas.SourceAnalysis
         /// <summary>
         /// The maximum class length.
         /// </summary>
-        private const int MaxClassLength = 150;
+        private const int MaxClassLength = 500;
 
         /// <summary>
         /// Analyzes the document.
@@ -121,18 +123,21 @@ namespace Uncas.SourceAnalysis
         private void FieldNamesMustBeginWithUnderscore(
             CsElement element)
         {
-            if (!element.Generated &&
-                element.ElementType == ElementType.Field &&
-                element.ActualAccess != AccessModifierType.Public &&
-                element.ActualAccess != AccessModifierType.Internal &&
-                element.Declaration.Name.ToCharArray()[0] != '_')
+            if (element.Generated ||
+                element.ElementType != ElementType.Field ||
+                element.ActualAccess == AccessModifierType.Public ||
+                element.ActualAccess == AccessModifierType.Internal ||
+                element.Declaration.Name.ToCharArray()[0] == '_' ||
+                element.Declaration.Tokens.Any(x => x.CsTokenType == CsTokenType.Const))
             {
-                AddViolation(
-                    element,
-                    "FieldNamesMustBeginWithUnderscore",
-                    element.Declaration.Name,
-                    LowerCaseFirstLetter(element.Declaration.Name));
+                return;
             }
+
+            AddViolation(
+                element,
+                "FieldNamesMustBeginWithUnderscore",
+                element.Declaration.Name,
+                LowerCaseFirstLetter(element.Declaration.Name));
         }
 
         /// <summary>
@@ -191,7 +196,15 @@ namespace Uncas.SourceAnalysis
 
             foreach (var statement in element.ChildStatements)
             {
-                lastLineNumber = statement.LineNumber;
+                lastLineNumber = Math.Max(lastLineNumber, statement.LineNumber);
+            }
+
+            foreach (var childElement in element.ChildElements)
+            {
+                foreach (var statement in childElement.ChildStatements)
+                {
+                    lastLineNumber = Math.Max(lastLineNumber, statement.LineNumber);
+                }
             }
 
             int numberOfLines = lastLineNumber - firstLineNumber + 1;
