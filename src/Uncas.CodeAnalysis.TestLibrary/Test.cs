@@ -17,7 +17,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <param name="myProperty">My property.</param>
         public Test(int myProperty)
         {
-            this.MyProperty = myProperty;
+            MyProperty = myProperty;
         }
 
         /// <summary>

@@ -37,9 +37,9 @@ namespace Uncas.SourceAnalysis
                 !csharpDocument.RootElement.Generated)
             {
                 csharpDocument.WalkDocument(
-                   new CodeWalkerElementVisitor<object>(this.VisitElement),
-                   new CodeWalkerStatementVisitor<object>(this.VisitStatement),
-                   new CodeWalkerExpressionVisitor<object>(this.VisitExpression),
+                   new CodeWalkerElementVisitor<object>(VisitElement),
+                   new CodeWalkerStatementVisitor<object>(VisitStatement),
+                   new CodeWalkerExpressionVisitor<object>(VisitExpression),
                    this);
             }
         }
@@ -68,9 +68,9 @@ namespace Uncas.SourceAnalysis
             CsElement parentElement,
             object context)
         {
-            this.FieldNamesMustBeginWithUnderscore(element);
-            this.TooLongMethod(element);
-            this.TooLongClass(element);
+            FieldNamesMustBeginWithUnderscore(element);
+            TooLongMethod(element);
+            TooLongClass(element);
             return true;
         }
 
@@ -145,7 +145,7 @@ namespace Uncas.SourceAnalysis
             var elementType = ElementType.Method;
             string ruleName = "TooLongMethod";
             var maxLength = MaxMethodLength;
-            this.TooLongElement(
+            TooLongElement(
                 element,
                 elementType,
                 ruleName,
@@ -161,7 +161,7 @@ namespace Uncas.SourceAnalysis
             var elementType = ElementType.Class;
             string ruleName = "TooLongClass";
             var maxLength = MaxClassLength;
-            this.TooLongElement(
+            TooLongElement(
                 element,
                 elementType,
                 ruleName,

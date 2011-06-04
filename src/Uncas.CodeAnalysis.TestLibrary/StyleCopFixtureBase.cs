@@ -115,7 +115,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <value>The violations.</value>
         protected List<Violation> Violations
         {
-            get { return this._violations; }
+            get { return _violations; }
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <value>The output.</value>
         protected List<string> Output
         {
-            get { return this._output; }
+            get { return _output; }
         }
 
         #endregion // StyleCop Results
@@ -211,20 +211,20 @@ namespace Uncas.CodeAnalysis.TestLibrary
         [SetUp]
         public void FixtureSetup()
         {
-            this.AddAddInsPath(this.StyleCopFolder);
-            this.AddAddInsPath(this.AddInsFolder);
+            AddAddInsPath(StyleCopFolder);
+            AddAddInsPath(AddInsFolder);
 
-            string settings = this.Settings;
+            string settings = Settings;
             if (!File.Exists(settings))
             {
                 throw new FileNotFoundException(settings);
             }
 
-            this._console = new StyleCopConsole(settings, false, null, this._addinPaths, false);
+            _console = new StyleCopConsole(settings, false, null, _addinPaths, false);
 
-            this._console.ViolationEncountered += (sender, args) =>
+            _console.ViolationEncountered += (sender, args) =>
             {
-                this._violations.Add(args.Violation);
+                _violations.Add(args.Violation);
                 Console.WriteLine(
                     string.Format(
                     "Rule '{0}' violated at line {1}: {2}",
@@ -233,9 +233,9 @@ namespace Uncas.CodeAnalysis.TestLibrary
                                                 args.Message));
             };
 
-            this._console.OutputGenerated += (sender, args) =>
+            _console.OutputGenerated += (sender, args) =>
             {
-                this._output.Add(args.Output);
+                _output.Add(args.Output);
                 Console.WriteLine(args.Output);
             };
         }
@@ -251,7 +251,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         public void Setup()
         {
             var configuration = new Configuration(new string[0]);
-            this._project = new CodeProject(Guid.NewGuid().GetHashCode(), null, configuration);
+            _project = new CodeProject(Guid.NewGuid().GetHashCode(), null, configuration);
         }
 
         /// <summary>
@@ -261,8 +261,8 @@ namespace Uncas.CodeAnalysis.TestLibrary
         [TearDown]
         public void Teardown()
         {
-            this._violations.Clear();
-            this._output.Clear();
+            _violations.Clear();
+            _output.Clear();
         }
 
         #endregion // Setup/Teardown
@@ -275,7 +275,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -290,7 +290,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         {
             if (disposing)
             {
-                this._console.Dispose();
+                _console.Dispose();
             }
         }
 
@@ -307,7 +307,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <param name="ruleName">Name of the rule.</param>
         protected void AssertNotViolated(string ruleName)
         {
-            if (this._violations.Exists(v => v.Rule.Name == ruleName))
+            if (_violations.Exists(v => v.Rule.Name == ruleName))
             {
                 Assert.Fail(
                         "Rule '{0}' was unexpectedly violated.",
@@ -330,7 +330,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <seealso cref="Predicate{T}"/>
         protected void AssertViolated(Predicate<Violation> match)
         {
-            if (!this._violations.Exists(match))
+            if (!_violations.Exists(match))
             {
                 Assert.Fail("Failed to violate a rule with " +
                                            "the specified criteria.");
@@ -352,7 +352,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <seealso cref="Predicate{T}"/>
         protected void AssertNotViolated(Predicate<Violation> match)
         {
-            if (this._violations.Exists(match))
+            if (_violations.Exists(match))
             {
                 Assert.Fail("A rule with the specified criteria was " +
                                            "violated (but none was expected to be).");
@@ -366,7 +366,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <param name="ruleName">Name of the rule.</param>
         protected void AssertViolated(string ruleName)
         {
-            if (!this._violations.Exists(v => v.Rule.Name == ruleName))
+            if (!_violations.Exists(v => v.Rule.Name == ruleName))
             {
                 Assert.Fail(
                         "Rule '{0}' was not violated (but was expected to be).",
@@ -382,7 +382,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// <param name="ruleName">Name of the rule.</param>
         protected void AssertViolated(int violationCount, string ruleName)
         {
-            int actualCount = this.Violations.FindAll(v => v.Rule.Name == ruleName).Count;
+            int actualCount = Violations.FindAll(v => v.Rule.Name == ruleName).Count;
             if (actualCount != violationCount)
             {
                 Assert.Fail(
@@ -410,7 +410,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
 
             foreach (int lineNumber in lineNumbers)
             {
-                if (!this._violations.Exists(v => v.Rule.Name == ruleName &&
+                if (!_violations.Exists(v => v.Rule.Name == ruleName &&
                                                  v.Line == lineNumber))
                 {
                     Assert.Fail(
@@ -443,7 +443,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
                 throw new FileNotFoundException(fileName);
             }
 
-            this._console.Core.Environment.AddSourceCode(this._project, fileName, null);
+            _console.Core.Environment.AddSourceCode(_project, fileName, null);
         }
 
         /// <summary>
@@ -451,8 +451,8 @@ namespace Uncas.CodeAnalysis.TestLibrary
         /// </summary>
         protected void RunAnalysis()
         {
-            var projects = new[] { this._project };
-            this._console.Start(projects, true);
+            var projects = new[] { _project };
+            _console.Start(projects, true);
         }
 
         /// <summary>
@@ -468,7 +468,7 @@ namespace Uncas.CodeAnalysis.TestLibrary
             {
                 if (Directory.Exists(folder))
                 {
-                    this._addinPaths.Add(folder);
+                    _addinPaths.Add(folder);
                 }
                 else
                 {
